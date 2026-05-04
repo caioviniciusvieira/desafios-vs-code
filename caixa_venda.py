@@ -20,39 +20,46 @@ armas = [
 ]
 carrinho = []
 
-def mostrarRelatorio():
+def processar_compra(escolha, s, saldo):
+    for x in armas:
+        if x["nome"] == escolha:
+            arma = escolha
+            respota = input("deseja comprar essa arma s/n:")
+            if respota == 's':
+                if x["estoque"] > 0:
+                    x["estoque"] -=1
+                    saldo += x["preco"]
+                    carrinho.append(arma)
+                    s = input("Deseja continuar (s/n):")
+                    return s, saldo
+                else:
+                    print("não tem em estoque",x["estoque"])
+            else:
+                s = input("Deseja continuar (s/n):")
+                return s, saldo
+        
+def mostrarRelatorio(saldo):
+    print("Produtos comprados",carrinho)
+    print("Valor a pagar",saldo)
     for x in armas:
         print("Nome:",x["nome"],"Estoque",x["estoque"])
         
-
 def caixa_eletronico():
     saldo = 0
-    s = 's'
-    while s == 's':
-            print("|| Lista de armas||")
-            for arma in armas:
-                print("Nome:",arma["nome"],"Tipo:",arma["tipo"],"Valor(R$):",arma["preco"])
-            try:
-                escolha = input(("Escolha sua arma:"))
-                for x in armas:
-                    if x["nome"] == escolha:
-                        arma = escolha
-                        respota = input("deseja comprar essa arma s/n:")
-                        if respota == 's':
-                            if x["estoque"] > 0:
-                                x["estoque"] -=1
-                                saldo += x["preco"]
-                                carrinho.append(arma)
-                                s = input("Deseja continuar (s/n):")
-                            else:
-                                print("não tem em estoque",x["estoque"])
-                if arma != escolha:
-                    print("Não temos essa arma")
-            except ValueError:
-                print("Escolha dentre essas opções")
-    print("Produtos comprados",carrinho)
-    print("Valor a pagar",saldo)
-    
-mostrarRelatorio()
+    continuar = 's'
+    while continuar == 's':
+        print("|| Lista de armas||")
+        for arma in armas:
+            print("Nome:",arma["nome"],"Tipo:",arma["tipo"],"Valor(R$):",arma["preco"])            
+        try:
+            escolha = input(("Escolha sua arma:"))
+            nomes = [a["nome"]for a in armas]
+            if escolha not in nomes:
+                print("Não temos essa arma")
+            else:
+                continuar, saldo = processar_compra(escolha, continuar, saldo)
+        except ValueError:
+            print("Escolha dentre essas opções")    
+    mostrarRelatorio(saldo)
 caixa_eletronico()
      
