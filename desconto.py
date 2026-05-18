@@ -1,4 +1,4 @@
-carrinho = [80,100,90,120,130]
+carrinho = [80,100,120,90,130]
 saldo = 0
 
 def descont(item, preco_final):
